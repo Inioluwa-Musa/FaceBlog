@@ -1,0 +1,47 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+header nav a {
+    color: black;
+    margin: 0 15px;
+    text-decoration: none;
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+form {
+    margin: 20px auto;
+    max-width: 400px;
+}
+
+form input, form textarea {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 8px;
+}
+
+form input[type="submit"] {
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+form input[type="submit"]:hover {
+    background-color: #555;
+}
+
+article {
+    margin-bottom: 20px;
+}
