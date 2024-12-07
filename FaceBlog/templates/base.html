@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}FaceBlog{% endblock %}</title>
+    <link rel="shortcut icon" href="/static/images/Fblo1.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <nav id="nav-base">
+            <img src="/static/images/FB2.png" alt="FaceBlog Logo">
+            <a href="{{ url_for('home') }}">Home</a>
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('new_post') }}">New Post</a>
+                <a href="{{ url_for('profile', username=current_user.username) }}">Profile</a>
+                <br>
+                <br>
+                {% if chatroom %}
+                    <a href="{{ url_for('chatrooms', chatroom_id=chatroom.id) }}">Chatrooms</a>
+                {% else %}
+                    <a href="{{ url_for('all_chatrooms') }}">Chatrooms</a>
+                {% endif %}
+                <a href="{{ url_for('list_conversations') }}">Direct Messages(Coming Soon!)</a>
+                <a href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('register') }}">Sign Up</a>
+            {% endif %}
+        </nav>
+        <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <img src="/static/images/FB2.png" alt="FaceBlog Logo">
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+              <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="{{ url_for('home') }}" style="width: 70%; border-radius: 4px;">Home</a>
+                    {% if current_user.is_authenticated %}
+                        <a class="dropdown-item" href="{{ url_for('new_post') }}" style="width: 70%; border-radius: 4px;">New Post</a>
+                        <a class="dropdown-item" href="{{ url_for('profile', username=current_user.username) }}" style="width: 70%; border-radius: 4px;">Profile</a>
+                        {% if chatroom %}
+                            <a class="dropdown-item" href="{{ url_for('chatrooms', chatroom_id=chatroom.id) }}" style="width: 70%; border-radius: 4px;">Chatrooms</a>
+                        {% else %}
+                            <a class="dropdown-item" href="{{ url_for('all_chatrooms') }}" style="width: 70%; border-radius: 4px;">Chatrooms</a>
+                        {% endif %}
+                        <a class="dropdown-item" href="{{ url_for('logout') }}" style="width: 70%; border-radius: 4px;">Logout</a>
+                    {% else %}
+                        <a class="dropdown-item" href="{{ url_for('login') }}" style="width: 70%; border-radius: 4px;">Login</a>
+                        <a class="dropdown-item" href="{{ url_for('register') }}" style="width: 70%; border-radius: 4px;">Register</a>
+                    {% endif %}    
+                  </div>
+                </li>
+              </ul>
+            </div>
+        </nav> -->
+        <form action="{{ url_for('search') }}" method="GET" class="jj">
+            <input type="text" name="query" placeholder="   Search..." style="border: none; border-radius: 30px;">
+            <button type="submit" style="border: none; border-radius: 5px; padding: 4px; background-color: black; color: white;">Search</button>
+        </form>    
+        <button id="dark-mode-toggle" style="background-color: black; color: white; border: none; border-radius: 5px; padding: 8px;">Toggle Dark Mode</button>
+
+        <script>
+            // Check if dark mode is enabled in local storage
+            const isDarkMode = localStorage.getItem('dark-mode') === 'enabled';
+
+            // Function to enable dark mode
+            function enableDarkMode() {
+                document.body.classList.add('dark-mode');
+                document.getElementById('dark-mode-toggle').textContent = 'Toggle Light Mode';
+                localStorage.setItem('dark-mode', 'enabled'); // Save dark mode state
+            }
+
+            // Function to disable dark mode
+            function disableDarkMode() {
+                document.body.classList.remove('dark-mode');
+                document.getElementById('dark-mode-toggle').textContent = 'Toggle Dark Mode';
+                localStorage.setItem('dark-mode', 'disabled'); // Save light mode state
+            }
+
+            // Initialize dark mode based on local storage
+            if (isDarkMode) {
+                enableDarkMode();
+            } else {
+                disableDarkMode();
+            }
+
+            // Toggle dark mode on button click
+            document.getElementById('dark-mode-toggle').addEventListener('click', function () {
+                const isDarkModeEnabled = document.body.classList.contains('dark-mode');
+                if (isDarkModeEnabled) {
+                    disableDarkMode();
+                } else {
+                    enableDarkMode();
+                }
+            });
+        </script>    
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
+<!-- navbar-expand-lg -->

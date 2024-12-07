@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Chat with {{ recipient.username }}</h1>
+
+<div id="chat-box" class="messages">
+    {% for message in messages %}
+        <div class="message {% if message.sender_id == current_user.id %}my-message{% else %}their-message{% endif %}">
+            <strong>{{ 'You' if message.sender_id == current_user.id else recipient.username }}:</strong>
+            {{ message.content }}
+            <small>{{ message.timestamp }}</small>
+        </div>
+    {% endfor %}
+</div>
+
+<form id="message-form">
+    {{ form.hidden_tag() }}
+    <textarea id="message-input" placeholder="Type your message here..." required></textarea>
+    <button type="submit">Send</button>
+</form>
+<a href="{{ url_for('list_conversations') }}">Back to Conversations</a>
+
+<script src="{{ url_for('static', filename='js/socket.io.min.js') }}"></script>
+<script>
+    const socket = io.connect();
+    const chatBox = document.getElementById('chat-box');
+    const messageForm = document.getElementById('message-form');
+    const messageInput = document.getElementById('message-input');
+
+    // Emit a new message to the server
+    messageForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const message = messageInput.value;
+        if (message.trim() === '') return;
+
+        socket.emit('send_direct_message', {
+            recipient_id: {{ recipient.id }},
+            message: message
+        });
+        messageInput.value = ''; // Clear the input box
+    });
+
+    // Listen for new messages from the server
+    socket.on('receive_direct_message', (data) => {
+        if (data.sender_id !== {{ recipient.id }} && data.sender_id !== {{ current_user.id }}) return;
+
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('message');
+        if (data.sender_id === {{ current_user.id }}) {
+            messageElement.classList.add('my-message');
+        } else {
+            messageElement.classList.add('their-message');
+        }
+        messageElement.innerHTML = `<strong>${data.sender_id === {{ current_user.id }} ? 'You' : data.sender_username}:</strong> ${data.message}
+                                     <small>${data.timestamp}</small>`;
+        chatBox.appendChild(messageElement);
+        chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to the bottom
+    });
+</script>
+{% endblock %}

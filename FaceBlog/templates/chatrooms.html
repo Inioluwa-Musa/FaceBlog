@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4 jqw">
+    <h2 class="text-center">Available Chatrooms</h2>
+    
+    <!-- Check if there are any chatrooms available -->
+    {% if chatrooms %}
+        <ul class="list-group mt-3">
+            <!-- Loop through each chatroom and display its details -->
+            {% for chatroom in chatrooms %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5>{{ chatroom.name }}</h5>
+                        <p>{{ chatroom.description }}</p>
+                    </div>
+                    <a href="{{ url_for('chatrooms', chatroom_id=chatroom.id) }}" class="btn btn-primary">
+                        Join Chatroom
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <!-- If no chatrooms are available -->
+        <div class="alert alert-warning mt-3 joe" role="alert">
+            No chatrooms available. Please create one!
+        </div>
+    {% endif %}
+
+    <!-- Button to create a new chatroom -->
+    <a href="{{ url_for('create_chatroom') }}" class="btn btn-success mt-4">Create New Chatroom</a>
+</div>
+{% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+{% endblock %}

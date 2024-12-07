@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>{{ user.username }}'s Profile</h1>
+    <p>Followers: {{ user.followers.count() }}</p>
+    {% if user != current_user %}
+        {% if current_user in user.followers %}
+            <a href="{{ url_for('unfollow', user_id=user.id) }}">Unfollow</a>
+        {% else %}
+            <a href="{{ url_for('follow', user_id=user.id) }}">Follow</a>
+        {% endif %}
+    {% else %}
+        <!-- <a href=""></a> -->
+    {% endif %}
+    
+
+    <img src="{{ url_for('static', filename='images/' + user.image_file) }}" alt="Profile Image" style="width:150px; height:150px; border-radius:50%;">
+    <p><strong>Bio:</strong> {{ user.bio }}</p>
+    <p><strong>Social Links:</strong> {{ user.social_links }}</p>
+    <br>
+    {% if user != current_user %}
+        <!-- <a href="{{ url_for('private_chat', user_id=user.id) }}">Send Message</a> -->
+    {% endif %}
+    {% if user == current_user %}
+        <!-- <a href="{{ url_for('list_conversations') }}">View All Conversations</a> -->
+        <br>
+        <a href="{{ url_for('edit_profile', username=user.username) }}">Edit Profile</a>
+    {% endif %}
+    <h2>Posts:</h2>
+    {% for post in posts %}
+        <h3>{{ post.title }}</h3>
+        <p>{{ post.content[:100] }}...</p>
+        <a href="{{ url_for('post', post_id=post.id) }}">Read more</a>
+    {% endfor %}
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+{% endblock %}

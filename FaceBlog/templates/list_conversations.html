@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Your Conversations</h1>
+<ul>
+    {% for user in conversations %}
+        <li>
+            <a href="{{ url_for('private_chat', user_id=user.id) }}">{{ user.username }}</a>
+        </li>
+    {% else %}
+        <p>(Coming Soon!)</p>
+    {% endfor %}
+</ul>
+<a href="{{ url_for('profile', username=current_user.username) }}">Back to Profile</a>
+{% endblock %}

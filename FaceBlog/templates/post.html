@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>{{ post.title }}</h1>
+    <img src="{{ url_for('static', filename='images/' + post.user.image_file) }}" alt="Profile Image" style="width:50px; height:50px; border-radius:50%;">
+    <p><strong>Posted by: {{ post.user.username }}</strong></p>
+    <p>{{ post.content }}</p>
+    {% if post.image_file %}
+        <img src="{{ url_for('static', filename='images/' + post.image_file) }}" alt="Post Image">
+    {% endif %}
+    <h2>Comments:</h2>
+    {% for comment in comments %}
+        <div>
+            <img src="{{ url_for('static', filename='images/' + comment.user.image_file) }}" alt="Profile Image" style="width:50px; height:50px; border-radius:50%;">
+            <strong>{{ comment.user.username }}</strong>
+            <p>{{ comment.content }}</p>
+            {% if comment.user != current_user %}
+                <form action="{{ url_for('like_comment', comment_id=comment.id) }}" method="POST" class="OO" style="display: inline-block;">
+                    <button type="submit" class="A1" id="A1">Like</button>
+                </form>
+                <form action="{{ url_for('dislike_comment', comment_id=comment.id) }}" method="POST" class="OO" style="display: inline-block;">
+                    <button type="submit" class="A1" id="A2">Dislike</button>
+                </form>
+                <p>Likes: {{comment.likes}}</p>
+            {% else %}
+                <p>Likes: {{comment.likes}}</p>
+            {% endif %}
+        </div>
+    {% else %}
+        <p>No comments yet.</p>
+    {% endfor %}
+
+<h4>Leave a Comment:</h4>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    {{ form.content.label }} {{ form.content(col=30, rows=5) }}<br>
+    {{ form.submit() }}
+</form>
+<a href="{{ url_for('edit_post', post_id=post.id) }}">Edit Post</a>
+<form action="{{ url_for('delete_post', post_id=post.id) }}" method="POST">
+    <button type="submit" style="background-color: red; border-radius: 4px; border: none; padding: 4px; padding-left: 8px; padding-right: 8px;  color: white; font-family: 'Courier New', Courier, monospace;">Delete Post</button>
+</form>
+{% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+{% endblock %}

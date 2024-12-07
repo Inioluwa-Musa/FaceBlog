@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+<h1>Search Results</h1>
+<h2>Posts</h2>
+{% for post in posts %}
+    <div class="post">
+        <h3><a href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h3>
+        <p>{{ post.content }}</p>
+    </div>
+{% endfor %}
+<h2>Users</h2>
+{% for user in users %}
+    <div class="user">
+        <h3><a href="{{ url_for('profile', username=user.username) }}">{{ user.username }}</a></h3>
+    </div>
+{% endfor %}
+<h2>Chatrooms</h2>
+{% for chatroom in chatrooms %}
+    <div class="chatroom">
+        <h3>
+            <a href="{{ url_for('chatrooms', chatroom_id=chatroom.id) }}">
+                {{chatroom.name}}
+            </a>
+        </h3>
+    </div>
+{% endfor %}
+<!-- {% for post in posts %}
+    <h2>Posts in {{ post.category_id }}</h2>
+    {% for post in posts %}
+        <div class="post">
+            <h2><a href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h2>
+            <p>{{ post.content }}</p>
+        </div>
+    {% endfor %}
+{% endfor %}     -->
+<!-- <h2>Categories</h2>
+{% for category in categories %}
+    <div class="post">
+        <h3><a href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h3>
+        <p>{{ post.content }}</p>
+    </div>
+{% endfor %} -->
+{% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            <ul>
+            {% for post, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+{% endblock %}

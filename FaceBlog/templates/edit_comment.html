@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Post{% endblock %}
+
+{% block content %}
+<h1>Edit Comment</h1>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div>
+        {{ form.title.label }} {{ form.title(size=32) }}
+    </div>
+    <div>
+        {{ form.content.label }} {{ form.content(cols=30, rows=10) }}
+    </div>
+    <button type="submit">Update Comment</button>
+</form>
+
+{% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+{% endblock %}

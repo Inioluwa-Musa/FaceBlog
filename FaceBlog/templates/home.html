@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Latest Posts</h1>
+    {% for post in posts %}
+        <article>
+            <img src="{{ url_for('static', filename='images/' + post.author.image_file) }}" alt="Profile Image" style="width:50px; height:50px; border-radius:50%;">
+            <h2>{{ post.title }}</h2>
+            <p>{{ post.content[:100] }}...</p>
+            <p><strong>Posted by: {{ post.author.username }}</strong></p>
+            <a href="{{ url_for('post', post_id=post.id) }}">Read more</a>
+        </article>
+    {% endfor %}
+    <p>{{a}}</p>
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+{% endblock %}
