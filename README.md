@@ -19,7 +19,7 @@ To start the app run `python app.py` in your terminal while inside the Faceblog 
 
 ## Coming Soon:
 1. Direct Messages(DMs) - [ ]
-2. Search by Category - [x]
+2. Search by Category - [ ]
 3. Settings Page - [ ]
 4. Private Chatrooms and Invitations - [ ]
 5. Email Verification - [ ]
