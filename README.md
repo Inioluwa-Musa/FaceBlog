@@ -1,4 +1,4 @@
-# FaceBlog
+# FaceBlog v0.0.4
 A social media app made by python.
 
 To start the app run `python app.py` in your terminal while inside the Faceblog Folder.
