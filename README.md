@@ -27,7 +27,7 @@ To start the app run `python app.py` in your terminal while inside the Faceblog 
 ---
 
 ## Contact
-For questions or support, feel free to reach out to me at:
+For questions or support or access to better versions if you like this project, feel free to reach out to me at:
 
 [inioluwamusa3@gmail.com](mailto:inioluwamusa3@gmail.com)
 
